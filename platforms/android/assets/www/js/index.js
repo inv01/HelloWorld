@@ -17,6 +17,10 @@
  * under the License.
  */
 var app = {
+    isPhoneGapReady: false,
+    isAndroid: false,
+    isIphone: false,
+    deviceUUID: 'undefined',
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -33,8 +37,23 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        app.isPhoneGapReady = true;
         app.receivedEvent('deviceready');
     },
+    deviceDetection: function () {
+        if (app.isPhoneGapReady) {
+          switch (device.platform) {
+            case "Android": app.isAndroid = true;
+            break;
+            case "iPhone": app.isIphone = true;
+            break;
+          }
+          alert("Detected you are using a " + device.platform);
+          alert("isAndroid " + app.isAndroid);
+          alert("isIphone " + app.isIphone);
+        }
+    },
+    
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
@@ -43,8 +62,12 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
+        if(app.isPhoneGapReady){
+            alert(id);
+            app.deviceUUID = device.uuid;
+            alert("deviceUUID " + app.deviceUUID);
+            app.deviceDetection();
+        }
     }
 };
 
