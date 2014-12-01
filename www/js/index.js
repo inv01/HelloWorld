@@ -40,6 +40,28 @@ var app = {
         app.isPhoneGapReady = true;
         app.receivedEvent('deviceready');
     },
+    
+    // Handle the pause
+    onPause: function () {
+        alert("Paused!");
+    },
+    // Handle the resume
+    onResume: function () {
+        alert("Resumed!");
+    },
+    
+    isOnline: function () {
+        /*var ref = window.open('http://www.telos-law.com', '_blank', 'location=no');
+         ref.addEventListener('loadstart', function(event) {});
+         ref.addEventListener('loadstop', function(event) {});
+         ref.addEventListener('loaderror', function(event) {alert('error: ' + event.message); });
+         ref.addEventListener('exit', function(event) {});*/
+    },
+    
+    isOffline: function () {
+        alert("No internet connection!");
+    },
+    
     deviceDetection: function () {
         if (app.isPhoneGapReady) {
           switch (device.platform) {
@@ -56,17 +78,25 @@ var app = {
     
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
+        
+        /*var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
 
         listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        receivedElement.setAttribute('style', 'display:block;');*/
         if(app.isPhoneGapReady){
             alert(id);
             app.deviceUUID = device.uuid;
             alert("deviceUUID " + app.deviceUUID);
             app.deviceDetection();
+            
+        // Register the event listeners
+            document.addEventListener('pause', this.onPause, false);
+            document.addEventListener('resume', this.onResume, false);
+            document.addEventListener('online', this.isOnline, false);
+            document.addEventListener('offline', this.isOffline, false);
+        
         }
     }
 };
